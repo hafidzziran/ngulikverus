@@ -15,9 +15,9 @@ then
     exit 1
 fi
 
-# Cek apakah file verus ada
-if [ ! -f "./verus" ]; then
-    echo "File 'verus' tidak ditemukan! Pastikan sudah diekstrak di folder saat ini"
+# Cek apakah file SRBMiner-MULTI ada
+if [ ! -f "./SRBMiner-MULTI" ]; then
+    echo "File 'SRBMiner-MULTI' tidak ditemukan! Pastikan sudah diekstrak di folder saat ini"
     exit 1
 fi
 
@@ -27,13 +27,18 @@ do
     echo "Memulai sesi ke-$i"
 
     # Jalankan mining di dalam screen
-    screen -dmS verus ./verus -a verus -o $POOL -u $WALLET.$WORKER -p x -t $CPU_THREADS
+    screen -dmS srbminer ./SRBMiner-MULTI \
+    --algorithm verushash \
+    --pool $POOL \
+    --wallet $WALLET.$WORKER \
+    --password x \
+    --cpu-threads $CPU_THREADS
 
     echo "Menambang selama $DURATION detik..."
     sleep $DURATION
 
     echo "Menghentikan sesi ke-$i"
-    pkill verus
+    pkill SRBMiner-MULTI
 
     # Jeda sebelum sesi berikutnya
     if [ $i -lt 4 ]; then
